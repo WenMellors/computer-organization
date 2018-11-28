@@ -82,15 +82,18 @@ endmodule
 module NPC( // if(branch != 0 && Jump != 0, use NPC) --- Mux_PC
     input [31:0] PC4,
     input [25:0] imm,
-    input [31:0] GRF.RD1,
+    input [31:0] GRF_RD1,
     input branch,
     input [1:0]jump,
     input zero,
     output [31:0] nPC
     );
 
-	assign nPC = (branch == 1&& zero ==1) ? (PC + 4 + $signed({imm[15:0],2'b00})) : // if(branch == 1&&zero == 1)
-				  	(jump == 1) ? {PC[31:28],imm,2'b00} : // else if(jump == 1)
-				  	(jump == 2) ? GRF.RD1 : PC4; // else if(jump == 2)
+	wire pc;
+	assign pc = PC4 - 4;
+	assign nPC = (branch == 1&& zero ==1) ? (PC4 + $signed({imm[15:0],2'b00})) : // if(branch == 1&&zero == 1)
+				  	(jump == 1) ? {pc[31:28],imm,2'b00} : // else if(jump == 1)
+				  	(jump == 2) ? GRF_RD1 : PC4 + 4; // else if(jump == 2)
 
 endmodule
+
