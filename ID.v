@@ -48,7 +48,7 @@ module GRF(
 		else begin
 			if(WE == 1 && Write1 != 0) begin // because $0 couldn't be written
 				grf[Write1] <= Data;
-				$display("@%h: $%d <= %h", WPC, Write1, Data);
+				$display("%d@%h: $%d <= %h", $time, WPC, Write1, Data);
 			end
 		end
 	end

@@ -43,7 +43,7 @@ module DM(
 		end
 		else if(WE == 1) begin
 			{RAM[Address[11:0]+3],RAM[Address[11:0]+2],RAM[Address[11:0]+1],RAM[Address[11:0]]} <= Data; // just support sw
-			$display("@%h: *%h <= %h",pc, Address, Data);
+			$display("%d@%h: *%h <= %h", $time, pc, Address, Data);
 		end
 	end
 	
