@@ -11,10 +11,17 @@ module EX_MEM(
 	output [31:0] WriteDataM,
 	output [31:0] PC8M,
 	output [31:0] InsM
-	)
+	);
 
 	reg [31:0] a, b, c, d;
 
+	initial begin
+		a = 0;
+		b = 0;
+		c = 32'h00003000;
+		d = 0;
+	end
+	
 	assign {ALUOutM, WriteDataM, PC8M, InsM} = {a, b, c, d};
 
 	always @(posedge clk) begin

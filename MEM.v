@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "head.v"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -52,11 +53,8 @@ endmodule
 module MEM_Control(
 	input [5:0] op,
 	input [5:0] funct,
-	output Memwrite,
-	)
-
-	parameter ROp = 6'b000000, ori = 6'b001101, lw = 6'b100011, sw = 6'b101011, beq = 6'b000100, lui = 6'b001111, jal = 6'b000011;
-    parameter addu = 6'b100001, subu = 6'b100011, jr = 6'b001000, sll = 6'b000000;
-
-    assign Memwrite = (op == sw) ? 1 : 0;
+	output MemWrite
+	);
+	
+   assign MemWrite = (op == `sw) ? 1 : 0;
 endmodule

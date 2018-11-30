@@ -1,19 +1,16 @@
 `timescale 1ns / 1ps
-
+`include "head.v"
 module ID_Control(
 	input [5:0] op,
 	input [5:0] funct,
 	output branch,
 	output [1:0] jump,
 	output [1:0] ExtOp
-	)
-	
-	parameter ROp = 6'b000000, ori = 6'b001101, lw = 6'b100011, sw = 6'b101011, beq = 6'b000100, lui = 6'b001111, jal = 6'b000011;
-    parameter addu = 6'b100001, subu = 6'b100011, jr = 6'b001000, sll = 6'b000000;
+	);
 
-    assign branch = (op == beq) ? 1 : 0;
-    assign jump = (op == jal) ? 1 : (op == ROp && funct == jr) ? 2 : 0;
-    assign ExtOp = (op == lui) ? 2 : (op == ori) ? 1 : 0;
+	assign branch = (op == `beq) ? 1 : 0;
+    assign jump = (op == `jal) ? 1 : (op == `ROp && funct == `jr) ? 2 : 0;
+    assign ExtOp = (op == `lui) ? 2 : (op == `ori) ? 1 : 0;
 
 endmodule
 
@@ -89,7 +86,7 @@ module NPC( // if(branch != 0 && Jump != 0, use NPC) --- Mux_PC
     output [31:0] nPC
     );
 
-	wire pc;
+	wire [31:0] pc;
 	assign pc = PC4 - 4;
 	assign nPC = (branch == 1&& zero ==1) ? (PC4 + $signed({imm[15:0],2'b00})) : // if(branch == 1&&zero == 1)
 				  	(jump == 1) ? {pc[31:28],imm,2'b00} : // else if(jump == 1)

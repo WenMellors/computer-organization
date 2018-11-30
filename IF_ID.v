@@ -30,6 +30,11 @@ module IF_ID(
 
 	reg [31:0] pc4, Ins;
 
+	initial begin
+		pc4 = 32'h00003000;
+		Ins = 0;
+	end
+	
 	assign PC4D = pc4;
 	assign InsD = Ins;
 

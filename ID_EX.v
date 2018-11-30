@@ -13,10 +13,17 @@ module ID_EX(
 	output [31:0] EXTE,
 	output [31:0] PC8E,
 	output [31:0] InsE
-	)
+	);
 
 	reg [31:0] RD1, RD2, EXT, PC8, Ins;
 
+	initial begin
+		RD1 = 0;
+		RD2 = 0;
+		EXT = 0;
+		PC8 = 32'h3000;
+		Ins = 0;
+	end
 	assign {RD1E, RD2E, EXTE, PC8E, InsE} = {RD1, RD2, EXT, PC8, Ins};
 
 	always @(posedge clk) begin
