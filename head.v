@@ -24,3 +24,4 @@
 `define beq  6'b000100
 // J_type
 `define jal  6'b000011
+`define j 6'b000010

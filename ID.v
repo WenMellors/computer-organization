@@ -9,7 +9,7 @@ module ID_Control(
 	);
 
 	assign branch = (op == `beq) ? 1 : 0;
-    assign jump = (op == `jal) ? 1 : (op == `ROp && funct == `jr) ? 2 : 0;
+    assign jump = (op == `jal || op == `j) ? 1 : (op == `ROp && funct == `jr) ? 2 : 0;
     assign ExtOp = (op == `lui) ? 2 : (op == `ori) ? 1 : 0;
 
 endmodule
@@ -34,8 +34,8 @@ module GRF(
 			grf[i] = 32'h00000000;
 	end
 
-	assign Out1 = (Read1 == Write1 && Read1 != 0) ? Data : grf[Read1];// GRF forward 
-	assign Out2 = (Read2 == Write1 && Read2 != 0) ? Data : grf[Read2];
+	assign Out1 = (Read1 == Write1 && Read1 != 0 && WE == 1) ? Data : grf[Read1];// GRF forward 
+	assign Out2 = (Read2 == Write1 && Read2 != 0 && WE == 1) ? Data : grf[Read2];
 
 	always @(posedge clk) begin
 		if(rst == 1) begin
@@ -87,8 +87,10 @@ module NPC( // if(branch != 0 && Jump != 0, use NPC) --- Mux_PC
     );
 
 	wire [31:0] pc;
+	wire [31:0] offset;
 	assign pc = PC4 - 4;
-	assign nPC = (branch == 1&& zero ==1) ? (PC4 + $signed({imm[15:0],2'b00})) : // if(branch == 1&&zero == 1)
+	assign offset = $signed({imm[15:0],2'b00});
+	assign nPC = (branch == 1&& zero ==1) ? (PC4 + offset) : // if(branch == 1&&zero == 1)
 				  	(jump == 1) ? {pc[31:28],imm,2'b00} : // else if(jump == 1)
 				  	(jump == 2) ? GRF_RD1 : PC4 + 4; // else if(jump == 2)
 

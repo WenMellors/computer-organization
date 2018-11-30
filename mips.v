@@ -45,7 +45,7 @@ module mips(
 	DM a12(.Address(ALUOutM), .Data(Mux_rtM), .WE(MemWrite), .rst(reset), .clk(clk), .pc(pc), .Out(ReadData));
 	MEM_WB a13(.DMOut(ReadData), .ALUOutM(ALUOutM), .PC8M(PC8M), .InsM(InsM), .clk(clk), .rst(reset), .ReadDataW(ReadDataW), .ALUOutW(ALUOutW), .PC8W(PC8W), .InsW(InsW));
 	WB_Control a14(.op(InsW[`op]), .funct(InsW[`funct]), .RegWrite(RegWrite), .MemtoReg(MemtoReg), .RegDst(RegDst));
-	Conflict_Control a15(.RegWrite(RegWrite), .RegtoWrite(RegtoWrite), .InsD(InsD), .InsE(InsE), .InsM(InsM), .InsW(INsW), .ForwardrsD(ForwardrsD), .ForwardrtD(ForwardrtD), .ForwardrsE(ForwardrsE), .ForwardrtE(ForwardrtE), .ForwardrtM(ForwardrtM), .stall(stall));
+	Conflict_Control a15(.RegWrite(RegWrite), .RegtoWrite(RegtoWrite), .InsD(InsD), .InsE(InsE), .InsM(InsM), .ForwardrsD(ForwardrsD), .ForwardrtD(ForwardrtD), .ForwardrsE(ForwardrsE), .ForwardrtE(ForwardrtE), .ForwardrtM(ForwardrtM), .stall(stall));
 
 	// WB 
 	assign WPC = PC8W - 8;
