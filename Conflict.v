@@ -7,8 +7,8 @@ module Conflict_Control(
 	input [31:0] InsM,
 	input RegWrite,
 	input [4:0] RegtoWrite,
-	output [2:0] ForwardrsD,
-	output [2:0] ForwardrtD,
+	output [1:0] ForwardrsD,
+	output [1:0] ForwardrtD,
 	output [1:0] ForwardrsE,
 	output [1:0] ForwardrtE,
 	output ForwardrtM,
@@ -54,13 +54,11 @@ module Conflict_Control(
 	// Mux_rs
 	assign ForwardrsD = (linkE == 1 && InsD[`rs] == 31) ? 1 : // PC8E
 						(InsD[`rs]!=0 && ((cal_iM == 1 && InsD[`rs] == InsM[`rt])||(cal_rM == 1 && InsD[`rs] == InsM[`rd]))) ? 2: // ALUOutM
-						(linkM == 1 && InsD[`rs] == 31) ? 3 : // PC8M
-						(InsD[`rs]!=0 && RegWrite == 1 && InsD[`rs] == RegtoWrite) ? 4 : 0; // DatatoReg
+						(linkM == 1 && InsD[`rs] == 31) ? 3 : 0; // PC8M
 	
 	assign ForwardrtD = (InsD[`rt]==31 && linkE == 1) ? 1 : // PC8E
 						(InsD[`rt]!=0 && ((cal_rM == 1 && InsM[`rd] == InsD[`rt])||(cal_iM == 1 && InsM[`rt] == InsD[`rt]))) ? 2: // ALUOutM
-						(linkM == 1 && InsD[`rt] == 31) ? 3 : // PC8M
-						(InsD[`rt]!=0 && RegWrite == 1 && InsD[`rt] == RegtoWrite) ? 4 : 0; // PC8M
+						(linkM == 1 && InsD[`rt] == 31) ? 3 : 0;
 	
 	assign ForwardrsE = (InsE[`rs]!=0 &&((InsE[`rs]==InsM[`rt]&&cal_iM==1)||(InsE[`rs]==InsM[`rd]&&cal_rM==1))) ? 1: // ALUOutM
 						(InsE[`rs]==31 && linkM == 1) ? 2: // PC8M
