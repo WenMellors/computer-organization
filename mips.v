@@ -69,12 +69,10 @@ module mips(
 						(MemtoReg == 1) ? ReadDataW : PC8W;
 	// Mux_rsD
 	assign Mux_rsD = (ForwardrsD == 0) ? RD1 :
-						(ForwardrsD == 1) ? PC8E :
-						(ForwardrsD == 2) ? ALUOutM: PC8M ;
+						(ForwardrsD == 1) ? ALUOutM : PC8M ;
 	// Mux_rtD
 	assign Mux_rtD = (ForwardrtD == 0) ? RD2:
-						(ForwardrtD == 1) ? PC8E :
-						(ForwardrtD == 2) ? ALUOutM: PC8M ;
+						(ForwardrtD == 1) ? ALUOutM : PC8M ;
 	// Mux_rsE
 	assign Mux_rsE = (ForwardrsE == 0) ? RD1E:
 						(ForwardrsE == 1) ? ALUOutM:

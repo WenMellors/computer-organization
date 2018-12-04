@@ -13,7 +13,7 @@ ins_set = [
 	('0', 'subu {0}, {1}, {2}', 'reg', 'reg', 'reg'),
 	('0', 'sll {0}, {1}, {2}', 'reg', 'reg', 'shamt'),
 	('0', 'sll {0}, {1}, {2}', 'reg', 'reg', 'shamt'),
-	('1', 'jr {0}', 'reg_jump'),
+	#('1', 'jr {0}', 'reg_jump'),
 	('0', 'ori {0}, {1}, {2}', 'reg', 'reg', 'imm'),
 	('0', 'ori {0}, {1}, {2}', 'reg', 'reg', 'imm'),
 	('0', 'ori {0}, {1}, {2}', 'reg', 'reg', 'imm'),
@@ -27,9 +27,9 @@ ins_set = [
 	('0', 'lw {0}, {1}($0)', 'reg', 'imm_w'),
 	('0', 'sw {0}, {1}($0)', 'reg', 'imm_w'),
 	('0', 'sw {0}, {1}($0)', 'reg', 'imm_w'),
-	('1', 'beq {0}, {1}, {2}', 'reg', 'reg', 'lable'),
-	('1', 'jal {0}', 'lable'),
-	('1', 'j {0}', 'lable')
+	#('1', 'beq {0}, {1}, {2}', 'reg', 'reg', 'lable'),
+	#('1', 'jal {0}', 'lable'),
+	#('1', 'j {0}', 'lable')
 ]
 # reg set
 reg_set = ['$%d' %i for i in range(26)]

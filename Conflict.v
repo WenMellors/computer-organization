@@ -52,13 +52,11 @@ module Conflict_Control(
 					(Tuse_rt == 1 && InsD[`rt]!=0 &&(InsD[`rt] == InsE[`rt] && loadE == 1)) ? 1 : 0; // cal_r `rt 
 	
 	// Mux_rs
-	assign ForwardrsD = (linkE == 1 && InsD[`rs] == 31) ? 1 : // PC8E
-						(InsD[`rs]!=0 && ((cal_iM == 1 && InsD[`rs] == InsM[`rt])||(cal_rM == 1 && InsD[`rs] == InsM[`rd]))) ? 2: // ALUOutM
-						(linkM == 1 && InsD[`rs] == 31) ? 3 : 0; // PC8M
+	assign ForwardrsD = (InsD[`rs]!=0 && ((cal_iM == 1 && InsD[`rs] == InsM[`rt])||(cal_rM == 1 && InsD[`rs] == InsM[`rd]))) ? 1 : // ALUOutM
+						(linkM == 1 && InsD[`rs] == 31) ? 2: 0; // PC8M
 	
-	assign ForwardrtD = (InsD[`rt]==31 && linkE == 1) ? 1 : // PC8E
-						(InsD[`rt]!=0 && ((cal_rM == 1 && InsM[`rd] == InsD[`rt])||(cal_iM == 1 && InsM[`rt] == InsD[`rt]))) ? 2: // ALUOutM
-						(linkM == 1 && InsD[`rt] == 31) ? 3 : 0;
+	assign ForwardrtD = (InsD[`rt]!=0 && ((cal_rM == 1 && InsM[`rd] == InsD[`rt])||(cal_iM == 1 && InsM[`rt] == InsD[`rt]))) ? 1 : // ALUOutM
+						(linkM == 1 && InsD[`rt] == 31) ? 2: 0; // PC8M
 	
 	assign ForwardrsE = (InsE[`rs]!=0 &&((InsE[`rs]==InsM[`rt]&&cal_iM==1)||(InsE[`rs]==InsM[`rd]&&cal_rM==1))) ? 1: // ALUOutM
 						(InsE[`rs]==31 && linkM == 1) ? 2: // PC8M
