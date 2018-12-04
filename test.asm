@@ -41,6 +41,7 @@ addu $t1, $t2, $t3
 ori $t3, $t2, 10
 beq $t1, $0, lable5
 # beq and cal_i
+ori $t3, $0, 100
 lui $t1, 100
 ori $t2, $0, 11
 beq $t1, $t3, lable6
@@ -57,7 +58,6 @@ add $t3, $t1, $t2
 ori $t1, $0, 20
 ori $t2, $0, 15
 add $t3, $t2, $t1
-# cal_r_ID and 
 # jr and cal_r
 addu $t1, $ra, $t2
 subu $t2, $t2, $t3
