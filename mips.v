@@ -26,10 +26,10 @@ module mips(
 
 	wire [31:0] npc, InsF, PC4F, PC4D, InsD, DatatoReg, WPC, RD1, RD2, EXTD, Mux_rsD, Mux_rtD, PC8D, RD1E, RD2E, EXTE, PC8E, InsE, Mux_PC;
 	wire [31:0] Mux_ALUSrc1, Mux_ALUSrc2, ALUOut, ALUOutM, WriteDataM, PC8M, InsM, Mux_rsE, Mux_rtE, Mux_rtM, pc, ReadData, ReadDataW, ALUOutW, PC8W, InsW;
-	wire [1:0] jump, ExtOp, ALUSrc2, MemtoReg, RegDst, ForwardrsE, ForwardrtE;
+	wire [1:0] jump, ExtOp, ALUSrc2, MemtoReg, RegDst, ForwardrsE, ForwardrtE, ForwardrsD, ForwardrtD;
 	wire stallPC, rstID_EX, stallD, branch, RegWrite, zero, ALUSrc1, MemWrite, ForwardrtM, stall;
 	wire [4:0] RegtoWrite;
-	wire [2:0] ALUOp, ForwardrsD, ForwardrtD;
+	wire [2:0] ALUOp;
 
 	IFU a1(.nPC(Mux_PC), .rst(reset), .clk(clk), .En(stallPC), .ins(InsF), .PC4(PC4F));
 	IF_ID a2(.PC4_in(PC4F), .InsD_in(InsF), .rst(reset), .En(stallD), .clk(clk), .PC4D(PC4D), .InsD(InsD));
@@ -70,13 +70,11 @@ module mips(
 	// Mux_rsD
 	assign Mux_rsD = (ForwardrsD == 0) ? RD1 :
 						(ForwardrsD == 1) ? PC8E :
-						(ForwardrsD == 2) ? ALUOutM:
-						(ForwardrsD == 3) ? PC8M : DatatoReg;
+						(ForwardrsD == 2) ? ALUOutM: PC8M ;
 	// Mux_rtD
 	assign Mux_rtD = (ForwardrtD == 0) ? RD2:
 						(ForwardrtD == 1) ? PC8E :
-						(ForwardrtD == 2) ? ALUOutM:
-						(ForwardrtD == 3) ? PC8M : DatatoReg;
+						(ForwardrtD == 2) ? ALUOutM: PC8M ;
 	// Mux_rsE
 	assign Mux_rsE = (ForwardrsE == 0) ? RD1E:
 						(ForwardrsE == 1) ? ALUOutM:
