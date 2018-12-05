@@ -26,7 +26,7 @@ module mips(
 
 	wire [31:0] npc, InsF, PC4F, PC4D, InsD, DatatoReg, WPC, RD1, RD2, EXTD, Mux_rsD, Mux_rtD, PC8D, RD1E, RD2E, EXTE, PC8E, InsE, Mux_PC;
 	wire [31:0] Mux_ALUSrc1, Mux_ALUSrc2, ALUOut, ALUOutM, WriteDataM, PC8M, InsM, Mux_rsE, Mux_rtE, Mux_rtM, pc, ReadData, ReadDataW, ALUOutW, PC8W, InsW;
-	wire [1:0] jump, ExtOp, ALUSrc2, MemtoReg, RegDst, ForwardrsE, ForwardrtE, ForwardrsD, ForwardrtD;
+	wire [1:0] jump, ExtOp, ALUSrc2, MemtoReg, RegDst, ForwardrsE, ForwardrtE, ForwardrsD, ForwardrtD, DMtype;
 	wire stallPC, rstID_EX, stallD, branch, RegWrite, zero, ALUSrc1, MemWrite, ForwardrtM, stall;
 	wire [4:0] RegtoWrite;
 	wire [2:0] ALUOp;
@@ -41,8 +41,8 @@ module mips(
 	EX_Control a8(.op(InsE[`op]), .funct(InsE[`funct]), .ALUSrc1(ALUSrc1), .ALUSrc2(ALUSrc2), .ALUOp(ALUOp));
 	ALU a9(.A(Mux_ALUSrc1), .B(Mux_ALUSrc2), .ALUOp(ALUOp), .Result(ALUOut));
 	EX_MEM a10(.ALUOut(ALUOut), .WriteData(Mux_rtE), .PC8(PC8E), .Ins(InsE), .clk(clk), .rst(reset), .ALUOutM(ALUOutM), .WriteDataM(WriteDataM), .PC8M(PC8M), .InsM(InsM));
-	MEM_Control a11(.op(InsM[`op]), .funct(InsM[`funct]), .MemWrite(MemWrite));
-	DM a12(.Address(ALUOutM), .Data(Mux_rtM), .WE(MemWrite), .rst(reset), .clk(clk), .pc(pc), .Out(ReadData));
+	MEM_Control a11(.op(InsM[`op]), .funct(InsM[`funct]), .MemWrite(MemWrite), .DMtype(DMtype));
+	DM a12(.Address(ALUOutM), .Data(Mux_rtM), .WE(MemWrite), .rst(reset), .clk(clk), .DMtype(DMtype), .pc(pc), .Out(ReadData));
 	MEM_WB a13(.DMOut(ReadData), .ALUOutM(ALUOutM), .PC8M(PC8M), .InsM(InsM), .clk(clk), .rst(reset), .ReadDataW(ReadDataW), .ALUOutW(ALUOutW), .PC8W(PC8W), .InsW(InsW));
 	WB_Control a14(.op(InsW[`op]), .funct(InsW[`funct]), .RegWrite(RegWrite), .MemtoReg(MemtoReg), .RegDst(RegDst));
 	Conflict_Control a15(.RegWrite(RegWrite), .RegtoWrite(RegtoWrite), .InsD(InsD), .InsE(InsE), .InsM(InsM), .ForwardrsD(ForwardrsD), .ForwardrtD(ForwardrtD), .ForwardrsE(ForwardrsE), .ForwardrtE(ForwardrtE), .ForwardrtM(ForwardrtM), .stall(stall));

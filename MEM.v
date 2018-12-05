@@ -25,6 +25,7 @@ module DM(
     input WE,
     input rst,
     input clk,
+    input [1:0] DMtype,
     input [31:0] pc,
     output [31:0] Out
     );
@@ -36,15 +37,22 @@ module DM(
 			RAM[i] = 0;
 	end
 	
-	assign Out = {RAM[Address[11:0]+3],RAM[Address[11:0]+2],RAM[Address[11:0]+1],RAM[Address[11:0]]}; // now we just support read word
+	assign Out = (DMtype == 0) ? {RAM[Address[11:0]+3],RAM[Address[11:0]+2],RAM[Address[11:0]+1],RAM[Address[11:0]]} : 
+					RAM[Address[11:0]]; // now we just support read word and byte
 	always @(posedge clk) begin
 		if(rst == 1) begin
 			for(i=0;i<4096;i=i+1)
 				RAM[i] <= 0;
 		end
 		else if(WE == 1) begin
-			{RAM[Address[11:0]+3],RAM[Address[11:0]+2],RAM[Address[11:0]+1],RAM[Address[11:0]]} <= Data; // just support sw
-			$display("%d@%h: *%h <= %h", $time, pc, Address, Data);
+			if(DMtype == 0) begin
+				{RAM[Address[11:0]+3],RAM[Address[11:0]+2],RAM[Address[11:0]+1],RAM[Address[11:0]]} <= Data; // just support sw
+				$display("%d@%h: *%h <= %h", $time, pc, Address, Data);
+			end
+			else if(DMtype == 1) begin
+				RAM[Address[11:0]] <= Data[7:0];
+				$display("%d@%h: *%h <= %h", $time, pc, Address, {RAM[Address[11:2]*4+3], RAM[Address[11:2]*4+2], RAM[Address[11:2]*4+1], RAM[Address[11:2]*4]});
+			end
 		end
 	end
 	
@@ -53,8 +61,10 @@ endmodule
 module MEM_Control(
 	input [5:0] op,
 	input [5:0] funct,
-	output MemWrite
+	output MemWrite,
+	output [1:0] DMtype
 	);
 	
    assign MemWrite = (op == `sw) ? 1 : 0;
+   assign DMtype = (op == `sw || op == `lw) ? 0 : 1; // 0: by word, 1: by byte
 endmodule
