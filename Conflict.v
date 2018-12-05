@@ -21,7 +21,7 @@ module Conflict_Control(
 	assign Tuse_rs = (InsD[`op] == `beq || (InsD[`op] == `ROp && InsD[`funct] == `jr)) ? 0 : // branch and jr
 						(InsD[`op] == `ROp && (InsD[`funct] == `addu || InsD[`funct] == `subu || InsD[`funct] == `sll)) ? 1 : // cal_r
 						(InsD[`op] == `ori || InsD[`op] == `lui) ? 1: // cal_i
-						(InsD[`op] == `lw || InsD[`op] == `sw) ? 1 : 2; // laod and store
+						(InsD[`op] == `lw || InsD[`op] == `sw || InsD[`op] == `lb || InsD[`op] == `sb) ? 1 : 2; // laod and store
 
 	assign Tuse_rt = (InsD[`op] == `beq) ? 0:
 						(InsD[`op] == `ROp && (InsD[`funct] == `addu || InsD[`funct] == `subu || InsD[`funct] == `sll)) ? 1: 2; // cal_r
@@ -29,15 +29,15 @@ module Conflict_Control(
 	// EX
 	assign cal_rE = (InsE[`op] == `ROp && (InsE[`funct] == `addu || InsE[`funct] == `subu || InsE[`funct] == `sll)) ? 1 : 0; // rd
 	assign cal_iE = (InsE[`op] == `ori || InsE[`op] == `lui) ? 1 : 0; // rt
-	assign loadE = (InsE[`op] == `lw) ? 1 : 0; // load_rt
-	assign storeE = (InsE[`op] == `sw) ? 1 : 0; 
+	assign loadE = (InsE[`op] == `lw || InsE[`op] == `lb) ? 1 : 0; // load_rt
+	assign storeE = (InsE[`op] == `sw || InsE[`op] == `sb) ? 1 : 0; 
 	assign linkE = (InsE[`op] == `jal) ? 1 : 0;// jal and jalr and bql
 	// MEM
 	assign cal_rM = (InsM[`op] == `ROp && (InsM[`funct] == `addu || InsM[`funct] == `subu || InsM[`funct] == `sll)) ? 1 : 0; // rd
 	assign cal_iM = (InsM[`op] == `ori || InsM[`op] == `lui) ? 1 : 0; // rt
-	assign loadM = (InsM[`op] == `lw) ? 1 : 0;
+	assign loadM = (InsM[`op] == `lw || InsM[`op] == `lb) ? 1 : 0;
 	assign linkM = (InsM[`op] == `jal) ? 1 : 0;// jal and jalr and bql
-	assign storeM = (InsM[`op] == `sw) ? 1 : 0;
+	assign storeM = (InsM[`op] == `sw || InsM[`op] == `sb) ? 1 : 0;
 	// WB
 	// assign cal_rW = (InsW[`op] == `ROp && (InsW[`funct] == `addu || InsW[`funct] == `subu || InsW[`funct] == `sll)) ? 1 : 0; // rd
 	// assign cal_iW = (InsW[`op] == `ori || InsW[`op] == `lui) ? 1 : 0; // rt

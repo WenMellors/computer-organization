@@ -20,6 +20,8 @@
 // store_load
 `define lw   6'b100011 
 `define sw   6'b101011
+`define lb   6'b100000
+`define sb   6'b101000
 // branch
 `define beq  6'b000100
 // J_type

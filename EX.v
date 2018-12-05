@@ -8,10 +8,10 @@ module EX_Control(
 	 output [2:0] ALUOp
 	 );
 	
-	 assign ALUSrc1 = (op == `ROp && funct == `sll) ? 1 : 0;
-    assign ALUSrc2 = (op == `lui || op == `ori || op == `lw || op == `sw) ? 1 : (op == `ROp && funct == `sll) ? 2 : 0;
+	assign ALUSrc1 = (op == `ROp && funct == `sll) ? 1 : 0;
+    assign ALUSrc2 = (op == `lui || op == `ori || op == `lw || op == `sw || op == `lb || op == `sb) ? 1 : (op == `ROp && funct == `sll) ? 2 : 0;
     assign ALUOp = (op == `ori) ? 1: 
-    				((op == `ROp && funct == `addu) || op == `lw || op == `sw || op == `lui) ? 2 :
+    				((op == `ROp && funct == `addu) || op == `lw || op == `sw || op == `lui || op == `lb || op == `sb) ? 2 :
     				((op == `ROp && funct == `subu) || op == `beq) ? 3 :
     				(op == `ROp && funct == `sll) ? 4 : 0;
  	
