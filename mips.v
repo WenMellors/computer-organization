@@ -24,6 +24,7 @@ module mips(
     input reset
     );
 
+
 	wire [31:0] npc, InsF, PC4F, PC4D, InsD, DatatoReg, WPC, RD1, RD2, EXTD, Mux_rsD, Mux_rtD, PC8D, RD1E, RD2E, EXTE, PC8E, InsE, Mux_PC;
 	wire [31:0] Mux_ALUSrc1, Mux_ALUSrc2, ALUOut, ALUOutM, WriteDataM, PC8M, InsM, Mux_rsE, Mux_rtE, Mux_rtM, pc, ReadData, ReadDataW, ALUOutW, PC8W, InsW;
 	wire [31:0] ReadDataW_EXT;
